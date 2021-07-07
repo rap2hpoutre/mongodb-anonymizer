@@ -11,6 +11,9 @@
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
+    "@types/mongodb": "^3.6.20",
+    "faker": "^5.5.3",
+    "mongodb": "^3.6.10",
     "tslib": "^1"
   },
   "devDependencies": {
