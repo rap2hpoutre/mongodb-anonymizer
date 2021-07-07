@@ -4,9 +4,9 @@ mongodb-anonymizer
 MongoDB anonymzer tool.
 Export your MongoDB database anonymized from source to target. Replace all sensitive data thanks to `faker`.
 
+[![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/mongodb-anonymizer.svg)](https://npmjs.org/package/mongodb-anonymizer)
-[![CircleCI](https://circleci.com/gh/rap2hpoutre/mongodb-anonymizer/tree/main.svg?style=svg)](https://circleci.com/gh/rap2hpoutre/mongodb-anonymizer/tree/main)
-[![Downloads](https://img.shields.io/npm/d/mongodb-anonymizer.svg)](https://npmjs.org/package/mongodb-anonymizer)
+[![Downloads](https://img.shields.io/npm/dt/mongodb-anonymizer.svg)](https://npmjs.org/package/mongodb-anonymizer)
 [![License](https://img.shields.io/npm/l/mongodb-anonymizer.svg)](https://github.com/rap2hpoutre/mongodb-anonymizer/blob/master/package.json)
 
 ## Usage
@@ -36,6 +36,12 @@ Specifying another list via `--list` replace the default automatically anonymize
 
 ```csv
 email,name,description,address,city,country,phone,comment,birthdate
+```
+
+You can also specify replacements for a specific collection:
+
+```csv
+users.email,products.price
 ```
 
 #### Customize replacements 

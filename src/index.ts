@@ -77,18 +77,27 @@ class MongodbAnonymizer extends Command {
     const collectionDataAnonymized = [];
     const keysToAnonymize = list
       .filter(
-        (item) => !item.includes(".") || item.startsWith(`${collectionName}.`)
+        (item) =>
+          !item.match(/^[a-z_]+\./gi) || item.startsWith(`${collectionName}.`)
       )
-      .map((item) => item.replace(`${collectionName}.`, ""));
-    this.log(`Keys to anonymize: ${keysToAnonymize}`);
+      .map((item) => ({
+        field: item
+          .replace(`${collectionName}.`, "")
+          .replace(/:(?:.*)$/, "")
+          .toLowerCase(),
+        replacement: item.includes(":") ? item.replace(/^(?:.*):/, "") : null,
+      }));
+    const fieldsToAnonymize = keysToAnonymize.map((item) => item.field);
+    this.log(`Fields to anonymize: ${fieldsToAnonymize}`);
     for (const document of collectionData) {
       const documentAnonymized = {};
       for (const key in document) {
         if (!document) continue;
-        if (keysToAnonymize.includes(key)) {
+        if (fieldsToAnonymize.includes(key.toLowerCase())) {
           documentAnonymized[key] = this.anonymizeValue(
-            document[key],
-            key.toLowerCase()
+            key.toLowerCase(),
+            keysToAnonymize.find((item) => item.field === key.toLowerCase())
+              ?.replacement
           );
         } else {
           documentAnonymized[key] = document[key];
@@ -99,7 +108,17 @@ class MongodbAnonymizer extends Command {
     return collectionDataAnonymized;
   }
 
-  anonymizeValue(value: any, key: any) {
+  anonymizeValue(key: any, replacement) {
+    if (replacement) {
+      // Anonymize when key is like: `email:faker.internet.email`
+      if (replacement.startsWith("faker")) {
+        const [_one, two, three] = replacement.split(".");
+        if (!(two && three)) return replacement;
+        return faker[two][three]();
+      }
+      // Anonymize when key is like: `email:raph@example.org`
+      return replacement;
+    }
     if (key.includes("email")) return faker.internet.email();
     if (key.endsWith("name")) return faker.name.findName();
     if (key.includes("firstName")) return faker.name.firstName();
