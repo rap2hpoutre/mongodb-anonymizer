@@ -6,7 +6,6 @@ Export your MongoDB database anonymized from source to target. Replace all sensi
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/mongodb-anonymizer.svg)](https://npmjs.org/package/mongodb-anonymizer)
-[![Downloads](https://img.shields.io/npm/dt/mongodb-anonymizer.svg)](https://npmjs.org/package/mongodb-anonymizer)
 [![License](https://img.shields.io/npm/l/mongodb-anonymizer.svg)](https://github.com/rap2hpoutre/mongodb-anonymizer/blob/main/package.json)
 
 ## Usage
