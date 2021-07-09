@@ -142,6 +142,8 @@ class MongodbAnonymizer extends Command {
         return [];
       } else if (replacement === "{}") {
         return {};
+      } else if (replacement.startsWith("[") || replacement.startsWith("{")) {
+        return JSON.parse(replacement);
       } else if (replacement === "null") {
         return null;
       }
