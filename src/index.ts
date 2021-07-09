@@ -31,7 +31,7 @@ class MongodbAnonymizer extends Command {
     }
 
     if (flags.fakerLocale) {
-      faker.locale(flags.fakerLocale);
+      faker.locale = flags.fakerLocale;
     }
 
     this.log("Connecting to source…");
