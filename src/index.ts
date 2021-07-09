@@ -20,8 +20,12 @@ class MongodbAnonymizer extends Command {
       char: "f",
       description: "faker locale (e.g: en, fr, de)",
     }),
+    ignoreDocuments: flags.string({
+      char: "i",
+      description:
+        "documents from these collections will be ignored (comma separated)",
+    }),
   };
-
   async run() {
     const { flags } = this.parse(MongodbAnonymizer);
     if (!flags.uri || !flags.targetUri) {
@@ -33,6 +37,7 @@ class MongodbAnonymizer extends Command {
     if (flags.fakerLocale) {
       faker.locale = flags.fakerLocale;
     }
+    const ignoreDocuments = flags.ignoreDocuments?.split(",") || [];
 
     this.log("Connecting to source…");
     const client = new MongoClient(flags.uri, { useUnifiedTopology: true });
@@ -53,6 +58,16 @@ class MongodbAnonymizer extends Command {
     this.log("Anonymizing collections…");
     for (const collection of collections) {
       const collectionName = collection.name;
+
+      if (ignoreDocuments.includes(collectionName)) {
+        this.log("Ignoring collection: " + collectionName);
+        // drop collection if it exists
+        if ((await targetDb.collection(collectionName).countDocuments()) > 0) {
+          await targetDb.collection(collectionName).drop();
+        }
+        continue;
+      }
+
       this.log("Anonymizing collection: " + collectionName);
       const collectionData = await db
         .collection(collectionName)
