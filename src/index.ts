@@ -138,6 +138,12 @@ class MongodbAnonymizer extends Command {
         const [_one, two, three] = replacement.split(".");
         if (!(two && three)) return replacement;
         return faker[two][three]();
+      } else if (replacement === "[]") {
+        return [];
+      } else if (replacement === "{}") {
+        return {};
+      } else if (replacement === "null") {
+        return null;
       }
       // Anonymize when key is like: `email:raph@example.org`
       return replacement;
