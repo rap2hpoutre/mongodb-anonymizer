@@ -143,7 +143,6 @@ class MongodbAnonymizer extends Command {
       return replacement;
     }
     if (key.includes("email")) return faker.internet.email().toLowerCase();
-    if (key.endsWith("name")) return faker.name.findName();
     if (key.includes("firstName")) return faker.name.firstName();
     if (key.includes("lastName")) return faker.name.lastName();
     if (key === "description") return faker.lorem.sentence();
@@ -153,6 +152,7 @@ class MongodbAnonymizer extends Command {
     if (key.endsWith("phone")) return faker.phone.phoneNumber();
     if (key.endsWith("comment")) return faker.lorem.sentence();
     if (key.endsWith("date")) return faker.date.past();
+    if (key.endsWith("name")) return faker.name.findName();
     return faker.random.word();
   }
 }
