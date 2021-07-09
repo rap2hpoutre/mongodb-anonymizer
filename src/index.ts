@@ -150,7 +150,8 @@ class MongodbAnonymizer extends Command {
       // Anonymize when key is like: `email:raph@example.org`
       return replacement;
     }
-    if (key.includes("email")) return faker.internet.email().toLowerCase();
+    if (key.includes("email"))
+      return faker.unique(faker.internet.email).toLowerCase();
     if (key.includes("firstname")) return faker.name.firstName();
     if (key.includes("lastname")) return faker.name.lastName();
     if (key === "description") return faker.lorem.sentence();
