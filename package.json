@@ -1,7 +1,7 @@
 {
   "name": "mongodb-anonymizer",
   "description": "Mongodb anonymzer tool",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "author": "Raphaël Huchet @rap2hpoutre",
   "bin": {
     "mongodb-anonymizer": "./bin/run"
