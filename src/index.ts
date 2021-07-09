@@ -16,6 +16,10 @@ class MongodbAnonymizer extends Command {
       default:
         "email,name,description,address,city,country,phone,comment,birthdate",
     }),
+    fakerLocale: flags.string({
+      char: "f",
+      description: "faker locale (e.g: en, fr, de)",
+    }),
   };
 
   async run() {
@@ -24,6 +28,10 @@ class MongodbAnonymizer extends Command {
       this.error(
         "You must specify a source and a target uri (type -h for help)"
       );
+    }
+
+    if (flags.fakerLocale) {
+      faker.locale(flags.fakerLocale);
     }
 
     this.log("Connecting to source…");
@@ -119,7 +127,7 @@ class MongodbAnonymizer extends Command {
       // Anonymize when key is like: `email:raph@example.org`
       return replacement;
     }
-    if (key.includes("email")) return faker.internet.email();
+    if (key.includes("email")) return faker.internet.email().toLowerCase();
     if (key.endsWith("name")) return faker.name.findName();
     if (key.includes("firstName")) return faker.name.firstName();
     if (key.includes("lastName")) return faker.name.lastName();
